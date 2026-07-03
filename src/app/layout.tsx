@@ -2,44 +2,49 @@ import type { Metadata } from 'next';
 import React from 'react';
 import '../styles/globals.css';
 import Layout from '../components/Layout';
-import { SITE_URL } from '@/lib/site';
+import { DEFAULT_OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'World Now | Global & Regional News',
-    template: '%s | WORLD NOW',
+    default: `${SITE_NAME} | Global & Regional News`,
+    template: `%s | ${SITE_NAME.toUpperCase()}`,
   },
-  description:
-    'Read the latest independent news, analysis, and updates from Pakistan and around the world.',
+  description: SITE_DESCRIPTION,
   alternates: {
     canonical: SITE_URL,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'World Now',
-    title: 'World Now | Global & Regional News',
-    description:
-      'Read the latest independent news, analysis, and updates from Pakistan and around the world.',
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} | Global & Regional News`,
+    description: SITE_DESCRIPTION,
     url: SITE_URL,
     images: [
       {
-        url: '/browserlogo.png',
+        url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: 'WORLD NOW',
+        alt: SITE_NAME,
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'World Now | Global & Regional News',
-    description:
-      'Read the latest independent news, analysis, and updates from Pakistan and around the world.',
-    images: ['/browserlogo.png'],
+    title: `${SITE_NAME} | Global & Regional News`,
+    description: SITE_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 
