@@ -1,6 +1,7 @@
 'use client';
 
 import AdsterraNative from './AdsterraNative';
+import AdsterraResponsiveBanner from './AdsterraResponsiveBanner';
 
 interface AdsterraArticleContentProps {
   html: string;
@@ -48,11 +49,9 @@ export default function AdsterraArticleContent({ html, articleKey }: AdsterraArt
           ads.push(
             <AdsterraNative
               key={`first-${articleKey}`}
-              containerId={`container-${articleKey}-content-native-1`}
             />,
-            <AdsterraNative
+            <AdsterraResponsiveBanner
               key={`second-${articleKey}`}
-              containerId={`container-${articleKey}-content-native-2`}
             />,
           );
         }
@@ -61,16 +60,14 @@ export default function AdsterraArticleContent({ html, articleKey }: AdsterraArt
           ads.push(
             <AdsterraNative
               key={`first-${articleKey}`}
-              containerId={`container-${articleKey}-content-native-1`}
             />,
           );
         }
 
         if (part.paragraphIndex >= secondAdAfter && previousParagraphs < secondAdAfter) {
           ads.push(
-            <AdsterraNative
+            <AdsterraResponsiveBanner
               key={`second-${articleKey}`}
-              containerId={`container-${articleKey}-content-native-2`}
             />,
           );
         }

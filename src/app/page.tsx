@@ -256,7 +256,7 @@ export default function HomeLandingPage() {
         )}
       </section>
 
-      <AdsterraNative containerId="container-home-native-1" />
+      <AdsterraNative />
       <AdsterraResponsiveBanner />
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 pb-14 md:px-8">

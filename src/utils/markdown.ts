@@ -17,18 +17,17 @@ export function renderMarkdown(content: string, fallbackAltText?: string) {
         breaks: true,
       }) as string);
 
-  if (typeof window !== 'undefined' && fallbackAltText) {
-    const container = document.createElement('div');
-    container.innerHTML = html;
+  if (fallbackAltText) {
+    const escapedAltText = fallbackAltText
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
 
-    container.querySelectorAll('img').forEach((image) => {
-      const existingAlt = image.getAttribute('alt');
-      if (!existingAlt || existingAlt.trim() === '') {
-        image.setAttribute('alt', fallbackAltText);
-      }
+    return html.replace(/<img\b([^>]*?)>/gi, (image, attributes: string) => {
+      if (/\balt\s*=/i.test(attributes)) return image;
+      return `<img alt="${escapedAltText}"${attributes}>`;
     });
-
-    return container.innerHTML;
   }
 
   return html;
