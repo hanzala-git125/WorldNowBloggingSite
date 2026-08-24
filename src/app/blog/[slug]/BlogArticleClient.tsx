@@ -8,8 +8,8 @@ import api from '@/utils/api';
 import { renderMarkdown } from '@/utils/markdown';
 import { Blog, Comment } from '@/types';
 import ArticleCard from '@/components/ArticleCard';
-import AdsterraNative from '@/components/AdsterraNative';
 import AdsterraResponsiveBanner from '@/components/AdsterraResponsiveBanner';
+import AdsterraArticleContent from '@/components/AdsterraArticleContent';
 
 export default function BlogArticleClient() {
   const params = useParams();
@@ -167,13 +167,10 @@ export default function BlogArticleClient() {
                 {blog.excerpt}
               </p>
             )}
-            <div
-              dangerouslySetInnerHTML={{ __html: renderedContent }}
-              className="prose prose-lg max-w-none font-serif text-gray-800 leading-relaxed"
-            />
+            <div className="prose prose-lg max-w-none font-serif text-gray-800 leading-relaxed">
+              <AdsterraArticleContent html={renderedContent} articleKey={slug} />
+            </div>
           </div>
-
-          <AdsterraNative containerId="container-article-native-1" />
 
           {blog.tags && blog.tags.length > 0 && (
             <div className="mt-6 pt-6 border-t border-[#d4cbb8]">
@@ -292,7 +289,6 @@ export default function BlogArticleClient() {
 
         {relatedBlogs.length > 0 && (
           <div className="mt-16">
-            <AdsterraNative containerId="container-article-native-2" />
             <AdsterraResponsiveBanner />
             <h2 className="font-serif text-2xl font-bold text-[#0d0d0d] mb-8">Related Articles</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
