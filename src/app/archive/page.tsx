@@ -9,6 +9,7 @@ import { Blog } from '@/types';
 import ArticleCard from '@/components/ArticleCard';
 import { useSearchParams } from 'next/navigation';
 import { SITE_URL } from '@/lib/site';
+import AdsterraNative from '@/components/AdsterraNative';
 
 export const dynamic = 'force-dynamic';
 
@@ -222,18 +223,15 @@ function ArchivePageContent() {
             </div>
           </div>
 
-          <div className="my-12 w-full rounded border border-[#e8e0d0] bg-white p-4 text-center select-none">
-            <span className="mb-2 block text-[9px] font-sans uppercase tracking-widest text-gray-400">Advertisement</span>
-            <div className="flex min-h-[90px] w-full items-center justify-center border border-dashed border-gray-200 bg-[#faf8f4]">
-              <span className="text-xs italic text-gray-400">Section hero ad placeholder</span>
-            </div>
-          </div>
+          <AdsterraNative containerId="container-archive-native-1" />
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {gridArticles.map((article: Blog) => (
               <ArticleCard key={article._id} blog={article} />
             ))}
           </div>
+
+          <AdsterraNative containerId="container-archive-native-2" />
 
           <div className="mt-12 rounded-3xl border border-[#e8e0d0] bg-white p-6 text-sm text-gray-700 shadow-sm">
             <h3 className="font-serif text-xl font-bold text-[#0d0d0d]">Editorial note</h3>
