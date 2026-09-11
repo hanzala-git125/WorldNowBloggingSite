@@ -12,18 +12,18 @@ export default function AdsterraNative() {
 
   useEffect(() => {
     const slot = slotRef.current;
-    if (!slot) return;
-
-    const container = document.createElement('div');
-    container.id = nativeContainerId;
-    container.className = 'w-full max-w-2xl';
-    slot.appendChild(container);
+    if (!slot || document.getElementById(nativeContainerId)) return;
 
     const script = document.createElement('script');
     script.async = true;
     script.setAttribute('data-cfasync', 'false');
     script.src = nativeScriptUrl;
     slot.appendChild(script);
+
+    const container = document.createElement('div');
+    container.id = nativeContainerId;
+    container.className = 'w-full max-w-2xl';
+    slot.appendChild(container);
 
     return () => {
       script.remove();

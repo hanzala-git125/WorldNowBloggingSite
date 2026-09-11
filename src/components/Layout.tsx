@@ -57,7 +57,9 @@ export default function Layout({ children }: LayoutProps) {
         </Suspense>
         <main className="w-full flex-grow">{children}</main>
       </div>
+      <div className="container">
        {showSocialBar ? <AdsterraSocialBar /> : null}
+       </div>
       <CookieConsent />
       <Footer />
     </div>
