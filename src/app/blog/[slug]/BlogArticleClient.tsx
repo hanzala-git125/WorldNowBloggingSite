@@ -287,7 +287,6 @@ export default function BlogArticleClient() {
             </div>
           </section>
         </article>
-        <AdsterraNative />
         <AdsterraResponsiveBanner />
         {relatedBlogs.length > 0 && (
           <div className="mt-16">
