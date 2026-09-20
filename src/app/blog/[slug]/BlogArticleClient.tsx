@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, Share2, Calendar, User, Loader2, MessageSquare, Send } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import api from '@/utils/api';
 import { renderMarkdown } from '@/utils/markdown';
@@ -12,18 +13,18 @@ import AdsterraResponsiveBanner from '@/components/AdsterraResponsiveBanner';
 import AdsterraArticleContent from '@/components/AdsterraArticleContent';
 import AdsterraNative from "@/components/AdsterraNative";
 
-export default function BlogArticleClient() {
+export default function BlogArticleClient({ initialBlog }: { initialBlog?: Blog | null }) {
   const params = useParams();
   const router = useRouter();
   const slug = params.slug as string;
 
-  const [blog, setBlog] = useState<Blog | null>(null);
+  const [blog, setBlog] = useState<Blog | null>(initialBlog || null);
   const [relatedBlogs, setRelatedBlogs] = useState<Blog[]>([]);
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentForm, setCommentForm] = useState({ name: '', email: '', content: '' });
   const [submittingComment, setSubmittingComment] = useState(false);
   const [commentMessage, setCommentMessage] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialBlog);
 
   const renderedContent = useMemo(
     () => renderMarkdown(blog?.content || '', blog?.title || 'Article image'),
@@ -31,31 +32,40 @@ export default function BlogArticleClient() {
   );
 
   useEffect(() => {
-    async function fetchBlog() {
+    async function loadArticleExtras() {
       try {
-        setLoading(true);
-        const res = await api.get(`/blogs/${slug}`);
-        setBlog(res.data);
+        const currentBlog = initialBlog || blog;
+        if (!currentBlog) {
+          const articleRes = await api.get(`/blogs/${slug}`);
+          setBlog(articleRes.data);
+        }
 
-        const commentsRes = await api.get(`/blogs/${slug}/comments`);
+        const resolvedBlog = currentBlog || blog;
+        const requests: [Promise<any>, Promise<any> | null] = [
+          api.get(`/blogs/${slug}/comments`),
+          resolvedBlog?.category
+            ? api.get('/blogs', {
+                params: { category: resolvedBlog.category, status: 'published', limit: 6 },
+              })
+            : null,
+        ];
+        const [commentsRes, relatedRes] = await Promise.all(requests);
         setComments(Array.isArray(commentsRes.data) ? commentsRes.data : []);
 
-        if (res.data.category) {
-          const relatedRes = await api.get('/blogs', {
-            params: { category: res.data.category, status: 'published', limit: 6 },
-          });
-          const filtered = (relatedRes.data || []).filter((b: Blog) => b._id !== res.data._id).slice(0, 6);
+        if (relatedRes) {
+          const filtered = (relatedRes.data || [])
+            .filter((item: Blog) => item._id !== resolvedBlog?._id)
+            .slice(0, 6);
           setRelatedBlogs(filtered);
         }
       } catch (err) {
         console.error('Failed to fetch blog:', err);
-        setBlog(null);
       } finally {
         setLoading(false);
       }
     }
-    if (slug) fetchBlog();
-  }, [slug]);
+    if (slug) loadArticleExtras();
+  }, [blog, initialBlog, slug]);
 
   const handleShare = () => {
     const url = `${typeof window !== 'undefined' ? window.location.href : ''}`;
@@ -154,10 +164,14 @@ export default function BlogArticleClient() {
 
           {blog.featuredImage && (
             <div className="mb-8 rounded overflow-hidden">
-              <img
+              <Image
                 src={blog.featuredImage}
                 alt={blog.title}
-                className="w-full h-full object-cover"
+                width={1200}
+                height={675}
+                priority
+                sizes="(max-width: 1024px) 100vw, 960px"
+                className="h-auto w-full object-cover"
               />
             </div>
           )}

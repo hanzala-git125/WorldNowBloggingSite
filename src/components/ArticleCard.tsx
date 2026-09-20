@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Blog } from '@/types';
 
 interface ArticleCardProps {
@@ -22,11 +23,13 @@ export default function ArticleCard({ blog }: ArticleCardProps) {
       <div className="flex flex-col h-full justify-between">
         <div>
           <div className="w-full aspect-[3/2] overflow-hidden rounded mb-3 relative bg-[#e8e0d0]">
-            <img
+            <Image
               src={blog.featuredImage || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=800&q=80'}
               alt={blog.title}
+              width={800}
+              height={533}
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              loading="lazy"
             />
             <div className="absolute bottom-3 left-3 flex flex-col gap-1">
               <span className="bg-[#0d0d0d]/80 text-white font-sans text-[9px] uppercase tracking-widest px-2 py-0.5 rounded block">

@@ -104,7 +104,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BlogArticleClient />
+      <BlogArticleClient initialBlog={blog ? JSON.parse(JSON.stringify(blog)) : null} />
     </>
   );
 }

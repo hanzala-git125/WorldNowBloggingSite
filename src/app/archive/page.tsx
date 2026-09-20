@@ -1,7 +1,8 @@
 'use client';
 
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 import { Loader2, HelpCircle, Globe } from 'lucide-react';
 import api from '@/utils/api';
 import { usePageMetadata } from '@/utils/seo';
@@ -22,6 +23,9 @@ function ArchivePageContent() {
 
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const appUrl =
     typeof window !== 'undefined'
@@ -43,7 +47,8 @@ function ArchivePageContent() {
         setLoading(true);
         const params: Record<string, string> = {
           status: 'published',
-          limit: '24',
+          limit: '12',
+          offset: '0',
         };
         if (categoryFilter) params.category = categoryFilter;
         if (regionFilter) params.region = regionFilter;
@@ -52,6 +57,7 @@ function ArchivePageContent() {
         const res = await api.get('/blogs', { params });
         const blogsData = Array.isArray(res.data) ? res.data : [];
         setBlogs(blogsData);
+        setHasMore(res.headers['x-has-more'] === 'true');
       } catch (err) {
         console.error('Failed fetching blogs list: ', err);
         setBlogs([]);
@@ -62,6 +68,38 @@ function ArchivePageContent() {
 
     fetchBlogs();
   }, [categoryFilter, regionFilter, searchFilter]);
+
+  useEffect(() => {
+    if (!hasMore || loading || loadingMore) return;
+
+    const observer = new IntersectionObserver(async ([entry]) => {
+      if (!entry.isIntersecting) return;
+      setLoadingMore(true);
+      try {
+        const params: Record<string, string> = {
+          status: 'published',
+          limit: '12',
+          offset: String(blogs.length),
+        };
+        if (categoryFilter) params.category = categoryFilter;
+        if (regionFilter) params.region = regionFilter;
+        if (searchFilter) params.search = searchFilter;
+
+        const res = await api.get('/blogs', { params });
+        const nextBlogs = Array.isArray(res.data) ? res.data : [];
+        setBlogs((current) => [...current, ...nextBlogs]);
+        setHasMore(res.headers['x-has-more'] === 'true');
+      } catch (error) {
+        console.error('Failed loading more archive articles:', error);
+      } finally {
+        setLoadingMore(false);
+      }
+    }, { rootMargin: '500px' });
+
+    const target = loadMoreRef.current;
+    if (target) observer.observe(target);
+    return () => observer.disconnect();
+  }, [blogs.length, categoryFilter, hasMore, loading, loadingMore, regionFilter, searchFilter]);
 
   const featuredBlog = blogs.find((b) => b.isFeatured) || blogs[0];
   const latestArticles = blogs.filter((b) => b._id !== featuredBlog?._id);
@@ -156,11 +194,14 @@ function ArchivePageContent() {
 
                   <a href={`/blog/${featuredBlog.slug}`} className="group block">
                     <div className="relative mb-4 aspect-[16/9] w-full overflow-hidden rounded bg-gray-200">
-                      <img
+                      <Image
                         src={featuredBlog.featuredImage}
                         alt={featuredBlog.title}
+                        width={1200}
+                        height={675}
+                        priority
+                        sizes="(max-width: 1024px) 100vw, 66vw"
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
                       />
                     </div>
                     <h2 className="mb-3 font-serif text-3xl font-extrabold leading-tight text-[#0d0d0d] transition group-hover:text-[#b5150e] sm:text-4xl">
@@ -230,6 +271,10 @@ function ArchivePageContent() {
             {gridArticles.map((article: Blog) => (
               <ArticleCard key={article._id} blog={article} />
             ))}
+          </div>
+
+          <div ref={loadMoreRef} className="flex min-h-16 items-center justify-center">
+            {loadingMore ? <Loader2 className="h-6 w-6 animate-spin text-[#b5150e]" /> : null}
           </div>
 
           <AdsterraResponsiveBanner />

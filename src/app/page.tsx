@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { Globe, Loader2, TrendingUp } from "lucide-react";
 import api from "@/utils/api";
 import { usePageMetadata } from "@/utils/seo";
@@ -15,6 +16,9 @@ import AdsterraResponsiveBanner from "@/components/AdsterraResponsiveBanner";
 export default function HomeLandingPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const appUrl =
     typeof window !== "undefined"
@@ -35,9 +39,10 @@ export default function HomeLandingPage() {
       try {
         setLoading(true);
         const res = await api.get("/blogs", {
-          params: { status: "published", limit: "18" },
+          params: { status: "published", limit: "9", offset: "0" },
         });
         setBlogs(Array.isArray(res.data) ? res.data : []);
+        setHasMore(res.headers["x-has-more"] === "true");
       } catch (error) {
         console.error("Failed to load homepage data:", error);
         setBlogs([]);
@@ -48,6 +53,31 @@ export default function HomeLandingPage() {
 
     fetchBlogs();
   }, []);
+
+  useEffect(() => {
+    if (!hasMore || loading || loadingMore) return;
+
+    const observer = new IntersectionObserver(async ([entry]) => {
+      if (!entry.isIntersecting) return;
+      setLoadingMore(true);
+      try {
+        const res = await api.get("/blogs", {
+          params: { status: "published", limit: "9", offset: String(blogs.length) },
+        });
+        const nextBlogs = Array.isArray(res.data) ? res.data : [];
+        setBlogs((current) => [...current, ...nextBlogs]);
+        setHasMore(res.headers["x-has-more"] === "true");
+      } catch (error) {
+        console.error("Failed to load more homepage articles:", error);
+      } finally {
+        setLoadingMore(false);
+      }
+    }, { rootMargin: "500px" });
+
+    const target = loadMoreRef.current;
+    if (target) observer.observe(target);
+    return () => observer.disconnect();
+  }, [blogs.length, hasMore, loading, loadingMore]);
 
   const featuredBlog = blogs.find((blog) => blog.isFeatured) || blogs[0];
   const latestBlog = useMemo(
@@ -181,9 +211,13 @@ export default function HomeLandingPage() {
                     href={`/blog/${latestBlog.slug}`}
                     className="group block overflow-hidden rounded-2xl border border-[#e8e0d0] bg-[#f8f4ee]"
                   >
-                    <img
+                    <Image
                       src={latestBlog.featuredImage}
                       alt={latestBlog.title}
+                      width={900}
+                      height={506}
+                      priority
+                      sizes="(max-width: 1024px) 100vw, 45vw"
                       className="h-auto w-full object-cover transition duration-500 group-hover:scale-105"
                     />
                   </Link>
@@ -248,11 +282,16 @@ export default function HomeLandingPage() {
             <Loader2 className="h-8 w-8 animate-spin text-[#b5150e]" />
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {recentArticles.map((article) => (
-              <ArticleCard key={article._id} blog={article} />
-            ))}
-          </div>
+          <>
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {recentArticles.map((article) => (
+                <ArticleCard key={article._id} blog={article} />
+              ))}
+            </div>
+            <div ref={loadMoreRef} className="flex min-h-16 items-center justify-center">
+              {loadingMore ? <Loader2 className="h-6 w-6 animate-spin text-[#b5150e]" /> : null}
+            </div>
+          </>
         )}
       </section>
 

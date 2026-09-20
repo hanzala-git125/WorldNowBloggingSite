@@ -46,6 +46,8 @@ export async function GET(request: Request) {
     const status = searchParams.get('status') || 'published';
     const rawLimit = Number(searchParams.get('limit') || '24');
     const limit = Number.isFinite(rawLimit) ? Math.min(Math.max(rawLimit, 1), 60) : 24;
+    const rawOffset = Number(searchParams.get('offset') || '0');
+    const offset = Number.isFinite(rawOffset) ? Math.max(rawOffset, 0) : 0;
 
     await connectToDatabase();
 
@@ -90,12 +92,18 @@ export async function GET(request: Request) {
 
     const blogs = await Blog.find(query)
       .sort({ createdAt: -1 })
-      .limit(limit)
+      .select('-content')
+      .skip(offset)
+      .limit(limit + 1)
       .lean();
 
-    return Response.json(blogs, {
+    const hasMore = blogs.length > limit;
+    const page = hasMore ? blogs.slice(0, limit) : blogs;
+
+    return Response.json(page, {
       headers: {
         'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+        'X-Has-More': String(hasMore),
       },
     });
   } catch (error: any) {
@@ -108,12 +116,18 @@ export async function GET(request: Request) {
       const status = searchParams.get('status') || 'published';
       const rawLimit = Number(searchParams.get('limit') || '24');
       const limit = Number.isFinite(rawLimit) ? Math.min(Math.max(rawLimit, 1), 60) : 24;
+      const rawOffset = Number(searchParams.get('offset') || '0');
+      const offset = Number.isFinite(rawOffset) ? Math.max(rawOffset, 0) : 0;
 
-      const fallbackBlogs = filterBlogs(seedData.blogs, category, search, status, region).slice(0, limit);
+      const filteredBlogs = filterBlogs(seedData.blogs, category, search, status, region);
+      const fallbackBlogs = filteredBlogs
+        .slice(offset, offset + limit)
+        .map(({ content: _content, ...blog }) => blog);
       return Response.json(fallbackBlogs, {
         status: 200,
         headers: {
           'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+          'X-Has-More': String(offset + limit < filteredBlogs.length),
         },
       });
     }
