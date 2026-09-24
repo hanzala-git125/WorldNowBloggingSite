@@ -6,7 +6,7 @@ import Header from './Header';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import CookieConsent from './CookieConsent';
-import AdsterraSocialBar from './AdsterraSocialBar';
+// import AdsterraSocialBar from './AdsterraSocialBar';
 import api from '../utils/api';
 import { Category, Region } from '../types';
 
@@ -57,9 +57,9 @@ export default function Layout({ children }: LayoutProps) {
         </Suspense>
         <main className="w-full flex-grow">{children}</main>
       </div>
-      <div className="container">
+      {/* <div className="container">
        {showSocialBar ? <AdsterraSocialBar /> : null}
-       </div>
+       </div> */}
       <CookieConsent />
       <Footer />
     </div>
