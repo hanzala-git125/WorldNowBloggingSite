@@ -5,11 +5,14 @@ import Blog from '@/lib/models/Blog';
 import { buildArticleJsonLd, buildArticleMetadata } from '@/lib/seo';
 import { SITE_URL } from '@/lib/site';
 import BlogArticleClient from './BlogArticleClient';
+import { usePageMetadata } from '@/utils/seo';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const slug = params.slug;
+
+
 
   try {
     await connectToDatabase();

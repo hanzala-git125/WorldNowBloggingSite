@@ -8,6 +8,7 @@ export const metadata = {
   alternates: {
     canonical: `${SITE_URL}/terms`,
   },
+  image: "/browserlogo.png",
 };
 
 export default function Terms() {

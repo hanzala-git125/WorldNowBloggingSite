@@ -25,7 +25,7 @@ export default function BlogArticleClient({ initialBlog }: { initialBlog?: Blog 
   const [submittingComment, setSubmittingComment] = useState(false);
   const [commentMessage, setCommentMessage] = useState('');
   const [loading, setLoading] = useState(!initialBlog);
-
+   
   const renderedContent = useMemo(
     () => renderMarkdown(blog?.content || '', blog?.title || 'Article image'),
     [blog?.content, blog?.title],
@@ -182,9 +182,9 @@ export default function BlogArticleClient({ initialBlog }: { initialBlog?: Blog 
                 {blog.excerpt}
               </p>
             )}
-            {/* <div className="prose prose-lg max-w-none font-serif text-gray-800 leading-relaxed">
-              <AdsterraArticleContent html={renderedContent} articleKey={slug} />
-            </div> */}
+            <div className="prose prose-lg max-w-none font-serif text-gray-800 leading-relaxed">
+              <div dangerouslySetInnerHTML={{ __html: renderedContent }} />
+            </div>
           </div>
 
           {blog.tags && blog.tags.length > 0 && (

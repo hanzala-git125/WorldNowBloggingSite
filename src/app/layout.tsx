@@ -21,6 +21,11 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME.toUpperCase()}`,
   },
   description: SITE_DESCRIPTION,
+  icons: {
+    icon: '/browserlogo.png',
+    shortcut: '/browserlogo.png',
+    apple: '/browserlogo.png',
+  },
   alternates: {
     canonical: SITE_URL,
   },

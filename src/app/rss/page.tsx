@@ -8,6 +8,7 @@ export const metadata = {
   alternates: {
     canonical: `${SITE_URL}/rss`,
   },
+  image: "/browserlogo.png",
 };
 
 export default function RSS() {

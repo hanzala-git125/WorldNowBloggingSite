@@ -25,6 +25,7 @@ export default function Contact() {
     title: 'Contact WORLD NOW | Get in Touch',
     description: 'Contact the WORLD NOW editorial team with tips, feedback, and inquiries. We value your input.',
     url: `${typeof window !== 'undefined' ? window.location.origin : SITE_URL}/contact`,
+    image: "/browserlogo.png",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
