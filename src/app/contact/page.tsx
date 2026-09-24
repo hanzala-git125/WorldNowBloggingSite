@@ -100,7 +100,7 @@ export default function Contact() {
                 ['Fast response', 'We aim to reply within one business day for reader questions and editorial queries.'],
                 ['Publisher-ready', 'The form is connected to the newsroom inbox and stored for internal review.'],
                 ['Privacy aware', 'We use your contact details only to respond to your request and improve our service.'],
-                ['Adsense friendly', 'Clear editorial contact details help build trust with readers and AdSense reviewers.'],
+                ['Reader focused', 'Clear editorial contact details help build trust with readers.'],
               ].map(([title, text]) => (
                 <article key={title} className="rounded-2xl border border-[#efe7db] bg-[#fffdfa] p-4">
                   <h2 className="text-sm font-semibold text-[#0d0d0d] mb-1">{title}</h2>

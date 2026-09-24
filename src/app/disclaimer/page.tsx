@@ -4,7 +4,7 @@ import { SITE_URL } from '@/lib/site';
 
 export const metadata = {
   title: 'Disclaimer | WORLD NOW',
-  description: 'Read our editorial and site disclaimer for content accuracy, advertising, and external links.',
+  description: 'Read our editorial and site disclaimer for content accuracy and external links.',
   alternates: {
     canonical: `${SITE_URL}/disclaimer`,
   },
@@ -28,10 +28,6 @@ export default function Disclaimer() {
             <section className="rounded-2xl border border-[#efe7db] bg-[#fffdfa] p-5">
               <h2 className="text-xl font-semibold text-[#0d0d0d] mb-2">Editorial accuracy</h2>
               <p className="text-sm">Our reports are based on available information, credible sources, and editorial review. Errors may occur, and updates are made when necessary.</p>
-            </section>
-            <section className="rounded-2xl border border-[#efe7db] bg-[#fffdfa] p-5">
-              <h2 className="text-xl font-semibold text-[#0d0d0d] mb-2">Advertising and partnerships</h2>
-              <p className="text-sm">Some content may be sponsored, monetized, or supported by third-party partners. Editorial decisions are kept separate from advertising arrangements to maintain independence.</p>
             </section>
             <section className="rounded-2xl border border-[#efe7db] bg-[#fffdfa] p-5">
               <h2 className="text-xl font-semibold text-[#0d0d0d] mb-2">External links</h2>

@@ -225,17 +225,7 @@
       "createdAt": "2026-05-31T15:00:28.079Z"
     }
   ],
-  "messages": [
-    { 
-      "_id": "msg_1",
-      "name": "Mohammad Hamza",
-      "email": "hamza@example.com",
-      "subject": "Ad rates enquiry",
-      "message": "Could you please share your monthly pricing for newsletter sponsorship and sidebar banners?",
-      "isRead": false,
-      "createdAt": "2026-06-01T11:00:28.571Z"
-    }
-  ],
+  "messages": [],
   "seo": {
     "siteTitle": "WORLD NOW | Pakistan's Independent Voice",
     "siteDescription": "Committed to truth, independent of power, in service of the people of Pakistan. International affairs, economy, analysis, technology and culture stories.",

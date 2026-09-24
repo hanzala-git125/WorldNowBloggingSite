@@ -9,9 +9,6 @@ import api from '@/utils/api';
 import { renderMarkdown } from '@/utils/markdown';
 import { Blog, Comment } from '@/types';
 import ArticleCard from '@/components/ArticleCard';
-import AdsterraResponsiveBanner from '@/components/AdsterraResponsiveBanner';
-import AdsterraArticleContent from '@/components/AdsterraArticleContent';
-import AdsterraNative from "@/components/AdsterraNative";
 
 export default function BlogArticleClient({ initialBlog }: { initialBlog?: Blog | null }) {
   const params = useParams();
@@ -183,7 +180,7 @@ export default function BlogArticleClient({ initialBlog }: { initialBlog?: Blog 
               </p>
             )}
             <div className="prose prose-lg max-w-none font-serif text-gray-800 leading-relaxed">
-              <AdsterraArticleContent html={renderedContent} articleKey={slug} />
+              <div dangerouslySetInnerHTML={{ __html: renderedContent }} />
             </div>
           </div>
 
@@ -301,8 +298,6 @@ export default function BlogArticleClient({ initialBlog }: { initialBlog?: Blog 
             </div>
           </section>
         </article>
-        <AdsterraNative />
-        <AdsterraResponsiveBanner />
         {relatedBlogs.length > 0 && (
           <div className="mt-16">
             
