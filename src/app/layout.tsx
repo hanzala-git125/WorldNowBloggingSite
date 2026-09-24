@@ -59,9 +59,13 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [DEFAULT_OG_IMAGE],
   },
+  other: {
+    'google-adsense-account': 'ca-pub-4410278771838814',
+  },
   verification: {
     google: '0uUHSOJ8kUXfwhIer-6SwihK3F-QcSotn70QQpXL2r0',
   },
+  
 
 };
 
