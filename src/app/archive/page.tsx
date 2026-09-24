@@ -10,6 +10,8 @@ import { Blog } from '@/types';
 import ArticleCard from '@/components/ArticleCard';
 import { useSearchParams } from 'next/navigation';
 import { SITE_URL } from '@/lib/site';
+import AdsterraNative from '@/components/AdsterraNative';
+import AdsterraResponsiveBanner from '@/components/AdsterraResponsiveBanner';
 
 export const dynamic = 'force-dynamic';
 
@@ -263,6 +265,8 @@ function ArchivePageContent() {
             </div>
           </div>
 
+          <AdsterraNative />
+
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {gridArticles.map((article: Blog) => (
               <ArticleCard key={article._id} blog={article} />
@@ -272,6 +276,8 @@ function ArchivePageContent() {
           <div ref={loadMoreRef} className="flex min-h-16 items-center justify-center">
             {loadingMore ? <Loader2 className="h-6 w-6 animate-spin text-[#b5150e]" /> : null}
           </div>
+
+          <AdsterraResponsiveBanner />
 
           <div className="mt-12 rounded-3xl border border-[#e8e0d0] bg-white p-6 text-sm text-gray-700 shadow-sm">
             <h3 className="font-serif text-xl font-bold text-[#0d0d0d]">Editorial note</h3>

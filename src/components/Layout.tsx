@@ -1,10 +1,12 @@
 'use client';
 
 import React, { Suspense, useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Header from './Header';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import CookieConsent from './CookieConsent';
+import AdsterraSocialBar from './AdsterraSocialBar';
 import api from '../utils/api';
 import { Category, Region } from '../types';
 
@@ -13,8 +15,20 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
+  const pathname = usePathname();
   const [categories, setCategories] = useState<Category[]>([]);
   const [regions, setRegions] = useState<Region[]>([]);
+  const showSocialBar = Boolean(
+    pathname &&
+      (pathname === '/' ||
+        pathname === '/home' ||
+        pathname === '/archive' ||
+        pathname === '/about' ||
+        pathname === '/contact' ||
+        pathname === '/rss' ||
+        pathname === '/sitemap.xml' ||
+        pathname.startsWith('/blog/')),
+  );
 
   useEffect(() => {
     async function loadNavigationData() {
@@ -43,6 +57,9 @@ export default function Layout({ children }: LayoutProps) {
         </Suspense>
         <main className="w-full flex-grow">{children}</main>
       </div>
+      <div className="container">
+       {showSocialBar ? <AdsterraSocialBar /> : null}
+       </div>
       <CookieConsent />
       <Footer />
     </div>

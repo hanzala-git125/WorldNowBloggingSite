@@ -24,7 +24,7 @@ export default function Terms() {
           <p className="text-sm text-gray-500 mb-8">Last updated: June 2026</p>
 
           <div className="space-y-6 text-gray-800 leading-relaxed">
-            <p>By accessing or using WORLD NOW, you agree to the following terms. These terms are designed to protect readers and the editorial team while maintaining a trustworthy publishing environment.</p>
+            <p>By accessing or using WORLD NOW, you agree to the following terms. These terms are designed to protect readers, advertisers, and the editorial team while maintaining a trustworthy publishing environment.</p>
 
             <section className="rounded-2xl border border-[#efe7db] bg-[#fffdfa] p-5">
               <h2 className="text-xl font-semibold text-[#0d0d0d] mb-2">1. Use of the site</h2>
@@ -39,11 +39,15 @@ export default function Terms() {
               <p className="text-sm">Do not post unlawful, abusive, or misleading content. We reserve the right to remove comments, block access, or report behavior that harms the site or its users.</p>
             </section>
             <section className="rounded-2xl border border-[#efe7db] bg-[#fffdfa] p-5">
-              <h2 className="text-xl font-semibold text-[#0d0d0d] mb-2">4. Limitation of liability</h2>
-              <p className="text-sm">WORLD NOW is not liable for losses arising from site downtime, third-party links, or errors in information. We strive for accuracy but retain the right to update content as circumstances change.</p>
+              <h2 className="text-xl font-semibold text-[#0d0d0d] mb-2">4. Advertising and monetization</h2>
+              <p className="text-sm">WORLD NOW may display advertisements and monetized content. We do not guarantee any specific revenue, placement, or performance. Ads are presented in a way that respects reader experience and editorial independence.</p>
             </section>
             <section className="rounded-2xl border border-[#efe7db] bg-[#fffdfa] p-5">
-              <h2 className="text-xl font-semibold text-[#0d0d0d] mb-2">5. Governing law</h2>
+              <h2 className="text-xl font-semibold text-[#0d0d0d] mb-2">5. Limitation of liability</h2>
+              <p className="text-sm">WORLD NOW is not liable for losses arising from site downtime, third-party links, ad display, or errors in information. We strive for accuracy but retain the right to update content as circumstances change.</p>
+            </section>
+            <section className="rounded-2xl border border-[#efe7db] bg-[#fffdfa] p-5">
+              <h2 className="text-xl font-semibold text-[#0d0d0d] mb-2">6. Governing law</h2>
               <p className="text-sm">These terms are governed by the laws of Pakistan, and any legal dispute will be handled in the courts of Pakistan unless otherwise required by law.</p>
             </section>
 

@@ -10,6 +10,8 @@ import { usePageMetadata } from "@/utils/seo";
 import { Blog } from "@/types";
 import ArticleCard from "@/components/ArticleCard";
 import { SITE_URL } from "@/lib/site";
+import AdsterraNative from "@/components/AdsterraNative";
+import AdsterraResponsiveBanner from "@/components/AdsterraResponsiveBanner";
 
 export default function HomeLandingPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -292,6 +294,9 @@ export default function HomeLandingPage() {
           </>
         )}
       </section>
+
+      <AdsterraNative />
+      <AdsterraResponsiveBanner />
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 pb-14 md:px-8">
         <article className="rounded-3xl border border-[#e8e0d0] bg-white p-6 shadow-sm">

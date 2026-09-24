@@ -31,7 +31,7 @@ export default function RSS() {
               <ul className="list-disc pl-5 text-sm text-gray-700 space-y-2">
                 <li>Improves content discovery across readers, apps, and newsletters.</li>
                 <li>Helps search engines and aggregators index fresh updates from your site.</li>
-                <li>Supports a stable, publisher-grade structure for readers and aggregators.</li>
+                <li>Supports a stable, publisher-grade structure that AdSense reviewers value.</li>
               </ul>
             </section>
             <section className="rounded-2xl border border-[#efe7db] bg-[#fffdfa] p-5">
@@ -63,6 +63,10 @@ export default function RSS() {
                 <li><a href="https://www.inoreader.com" className="text-[#b5150e] hover:text-[#8a0f09]" target="_blank" rel="noopener noreferrer">Inoreader</a> — powerful feed subscription and organization.</li>
                 <li><a href="https://news.google.com" className="text-[#b5150e] hover:text-[#8a0f09]" target="_blank" rel="noopener noreferrer">Google News</a> — valuable for discovering fresh publisher content.</li>
               </ul>
+            </section>
+            <section className="rounded-2xl border border-[#efe7db] bg-[#fffdfa] p-5">
+              <h2 className="text-xl font-semibold text-[#0d0d0d] mb-3">Purpose for AdSense</h2>
+              <p className="text-sm text-gray-700 leading-relaxed">RSS and sitemap files indicate that your site is an active, structured publisher. They help reviewers understand your content architecture, update cadence, and navigation quality, which is part of the trust signal AdSense looks for.</p>
             </section>
           </div>
 

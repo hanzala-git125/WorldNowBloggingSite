@@ -6,6 +6,7 @@ import { ShieldCheck, Settings2 } from 'lucide-react';
 interface CookiePreferences {
   necessary: boolean;
   analytics: boolean;
+  ads: boolean;
 }
 
 const STORAGE_KEY = 'worldnow_cookie_consent';
@@ -13,6 +14,7 @@ const STORAGE_KEY = 'worldnow_cookie_consent';
 const defaultPreferences: CookiePreferences = {
   necessary: true,
   analytics: true,
+  ads: true,
 };
 
 export default function CookieConsent() {
@@ -33,6 +35,7 @@ export default function CookieConsent() {
       setPreferences({
         necessary: true,
         analytics: Boolean(parsed.analytics),
+        ads: Boolean(parsed.ads),
       });
     } catch {
       setIsVisible(true);
@@ -56,15 +59,17 @@ export default function CookieConsent() {
   };
 
   const handleAcceptAll = () => {
-    savePreferences({ necessary: true, analytics: true });
+    savePreferences({ necessary: true, analytics: true, ads: true });
   };
 
   const handleEssentialOnly = () => {
-    savePreferences({ necessary: true, analytics: false });
+    savePreferences({ necessary: true, analytics: false, ads: false });
   };
 
   const consentLabel = useMemo(() => {
-    return preferences.analytics ? 'All accepted' : 'Essential only';
+    if (!preferences.analytics && !preferences.ads) return 'Essential only';
+    if (preferences.analytics && preferences.ads) return 'All accepted';
+    return 'Custom choices';
   }, [preferences]);
 
   return (
@@ -80,12 +85,13 @@ export default function CookieConsent() {
                 </div>
 
                 <h2 className="mt-3 text-xl font-serif font-semibold text-white">
-                  We use cookies to improve trust and performance.
+                  We use cookies to improve trust, performance, and monetization.
                 </h2>
 
                 <p className="mt-3 text-sm text-gray-200 leading-relaxed">
                   Essential cookies keep the site secure, while optional analytics
-                  cookies help us understand usage and improve the site.
+                  and advertising cookies help us understand usage and support
+                  publisher tools such as AdSense.
                 </p>
 
                 <p className="mt-2 text-xs text-gray-300">
@@ -121,6 +127,11 @@ export default function CookieConsent() {
                         'analytics',
                         'Analytics',
                         'Helps improve content and traffic insights.',
+                      ],
+                      [
+                        'ads',
+                        'Advertising',
+                        'Supports monetization through ads.',
                       ],
                     ].map(([key, label, explanation]) => (
                       <label
